@@ -126,7 +126,7 @@ namespace ATAHelper
                 Console.WriteLine("Error! " + ex);
             }
         }
-        public static void Error(int errorNumber)
+        private static void Error(int errorNumber)
         {
             string errorSentence = "";
             switch (errorNumber)
