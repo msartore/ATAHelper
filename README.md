@@ -10,11 +10,11 @@ This tool is able of unzip or download files via command lines
 
 - Download file
 
-    ATAHelper <d> <Url> <Filename with extension>
+    ATAHelper d (Url) (Filename with extension)
     
 - Unzip file
 
-    ATAHelper <e> <Directory> <Output Directory>
+    ATAHelper e (Directory) (Output Directory)
 
 ## 🌞Windows Requirements
 
