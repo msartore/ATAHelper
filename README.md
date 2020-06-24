@@ -1,4 +1,4 @@
-![ata logo](https://postimg.cc/JGRS47bQ)
+![ata logo](https://i.postimg.cc/YqF7Rh0T/atahelper.png)
 
     ATAHelper version 0.0.1.0
         
