@@ -9,13 +9,13 @@ This tool is able of unzip or download files via command lines
 ## ❓How ATAHelper works?
 
 - Download file
-
-    ATAHelper d (Url) (Filename with extension)
-    
+```bash
+ATAHelper d <Url> <Filename with extension>
+```   
 - Unzip file
-
-    ATAHelper e (Directory) (Output Directory)
-
+```bash
+ATAHelper e <Directory> <Output Directory>
+```  
 ## 🌞Windows Requirements
 
 1.	.NET Framework 4.7.2 needed!
