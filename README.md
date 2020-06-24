@@ -4,7 +4,15 @@
         
 ## 💡Introduction
 
-This tool is able of unzip or download files
+This tool is able of unzip or download files via command lines
+
+## ❓How ATAHelper works?
+
+- Download file
+    ATAHelper <d> <Url> <Filename with extension>
+    
+- Unzip file
+    ATAHelper <e> <Directory> <Output Directory>
 
 ## 🌞Windows Requirements
 
