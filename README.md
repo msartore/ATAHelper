@@ -1,10 +1,10 @@
-![ata logo](https://i.postimg.cc/nccchBxv/atahelper-tool.png)
+![ata logo](https://i.postimg.cc/YqF7Rh0T/atahelper.png)
 
     ATAHelper version 0.0.1.0
         
 ## 💡Introduction
 
-This tool is able of unzip or download files via command lines
+This tool is able of unzip and download files via command lines
 
 ## ❓How ATAHelper works?
 
