@@ -30,10 +30,6 @@ namespace ATAHelper
                                     {
                                         arrayApks.Add(line.Substring(8));
                                     }
-                                    else
-                                    {
-                                        break;
-                                    }
                                 }
                                 int counter = 0;
                                 foreach (string str in arrayApks)
@@ -73,10 +69,6 @@ namespace ATAHelper
                                     if (line.Contains("package:"))
                                     {
                                         arrayApks.Add(line.Substring(8));
-                                    }
-                                    else
-                                    {
-                                        break;
                                     }
                                 }
                                 int counter = 0;
