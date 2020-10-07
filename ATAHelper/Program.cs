@@ -12,9 +12,10 @@ namespace ATAHelper
     {
         public static void Main(string[] args)
         {
+            try
+            { 
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
             Console.WriteLine("ATAHelper started");
-            var arrayApks = new List<string>();
             if (args.Length != 0)
             {
                 if (args.Length == 2)
@@ -22,84 +23,10 @@ namespace ATAHelper
                     switch (args[0])
                     {
                         case "apkNS":
-                            if (File.Exists(args[1]))
-                            {
-                                foreach (string line in File.ReadLines(args[1]))
-                                {
-                                    if (line.Contains("package:"))
-                                    {
-                                        arrayApks.Add(line.Substring(8));
-                                    }
-                                }
-                                int counter = 0;
-                                foreach (string str in arrayApks)
-                                {
-                                    Console.WriteLine(counter + " " + str);
-                                    counter++;
-                                }
-                                Console.WriteLine("Please select:");
-                                int indexApk =  Convert.ToInt32(Console.ReadLine());
-                                if(indexApk<0 || indexApk > arrayApks.Count)
-                                {
-                                    Error(4);
-                                }
-                                else
-                                {
-                                    System.Diagnostics.Process process = new System.Diagnostics.Process();
-                                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-                                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                                    startInfo.FileName = "adb.exe";
-                                    startInfo.Arguments = "uninstall " + arrayApks[indexApk];
-                                    process.StartInfo = startInfo;
-                                    process.Start();
-                                    process.WaitForExit();
-                                    Console.WriteLine(arrayApks[indexApk]+" Unistalled!");
-                                }
-                            }
-                            else
-                            {
-                                Error(3);
-                            }
+                            Uninstaller(args[1], "uninstall ");
                             break;
                         case "apkS":
-                            if (File.Exists(args[1]))
-                            {
-                                foreach (string line in File.ReadLines(args[1]))
-                                {
-                                    if (line.Contains("package:"))
-                                    {
-                                        arrayApks.Add(line.Substring(8));
-                                    }
-                                }
-                                int counter = 0;
-                                foreach (string str in arrayApks)
-                                {
-                                    Console.WriteLine(counter + " " + str);
-                                    counter++;
-                                }
-                                Console.WriteLine("Please select:");
-                                int indexApk = Convert.ToInt32(Console.ReadLine());
-                                if (indexApk < 0 || indexApk > arrayApks.Count)
-                                {
-                                    Error(4);
-                                }
-                                else
-                                {
-                                    System.Diagnostics.Process process = new System.Diagnostics.Process();
-                                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-                                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                                    startInfo.FileName = "adb.exe";
-                                    startInfo.Arguments = "shell pm uninstall -k --user 0 " + arrayApks[indexApk];
-                                    process.StartInfo = startInfo;
-                                    process.Start();
-                                    process.WaitForExit();
-                                    Console.WriteLine(arrayApks[indexApk] + " Unistalled!");
-                                }
-                            }
-                            else
-                            {
-                                Error(3);
-                            }
+                            Uninstaller(args[1], "shell pm uninstall -k --user 0 ");
                             break;
                         default:
                             Error(2);
@@ -149,6 +76,11 @@ namespace ATAHelper
                 Error(0);
             }
             Console.WriteLine("ATAHelper Finished");
+            }
+            catch
+            {
+                Error(5);
+            }
         }
         private static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
         {
@@ -232,10 +164,58 @@ namespace ATAHelper
                 case 4:
                     errorSentence = "Error! [Wrong index]";
                     break;
+                case 5:
+                    errorSentence = "Error! [Generic error]";
+                    break;
                 default:
                     break;
             }
             Console.WriteLine(errorSentence);
+        }
+
+        public static void Uninstaller(string filename, string command)
+        {
+            var arrayApks = new List<string>();
+            if (File.Exists(filename))
+            {
+                foreach (string line in File.ReadLines(filename))
+                {
+                    if (line.Contains("package:"))
+                    {
+                        arrayApks.Add(line.Substring(8));
+                    }
+                }
+                int counter = 0;
+                foreach (string str in arrayApks)
+                {
+                    Console.WriteLine(counter + ". " + str);
+                    counter++;
+                }
+                Console.WriteLine("-1. EXIT");
+                Console.WriteLine("Please select:");
+                int indexApk = Convert.ToInt32(Console.ReadLine());
+                if (indexApk < 0 || indexApk > arrayApks.Count)
+                {
+                    if(indexApk != -1)
+                        Error(4);
+                }
+                else
+                {
+                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                    startInfo.FileName = "adb.exe";
+                    startInfo.Arguments = command + arrayApks[indexApk];
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    process.WaitForExit();
+                    Console.WriteLine(arrayApks[indexApk] + " Uninstalled!");
+                }
+            }
+            else
+            {
+                Error(3);
+            }
         }
     }
 }
