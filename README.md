@@ -16,7 +16,7 @@ ATAHelper d <Url> <Filename with extension>
 ```bash
 ATAHelper e <Directory> <Output Directory>
 ```  
-- Unistall system app
+- Uninstall system app
 ```bash
 ATAHelper apkS <filename>
 ```  
@@ -24,7 +24,7 @@ To use this command you have to create a file with the list of apps, to create t
 ```bash
 adb shell pm list packages -s > filename
 ```  
-- Unistall non system app
+- Uninstall non system app
 ```bash
 ATAHelper apkNS <filename>
 ```  
