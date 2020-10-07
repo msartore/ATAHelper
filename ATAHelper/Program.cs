@@ -4,6 +4,7 @@ using System.Net;
 using System.Reflection;
 using System.Globalization;
 using System.IO;
+using System.Collections.Generic;
 
 namespace ATAHelper
 {
@@ -13,11 +14,108 @@ namespace ATAHelper
         {
             AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
             Console.WriteLine("ATAHelper started");
+            var arrayApks = new List<string>();
             if (args.Length != 0)
             {
-                //ServicePointManager internet manager
-                if (CheckForInternetConnection())
+                if (args.Length == 2)
                 {
+                    switch (args[0])
+                    {
+                        case "apkNS":
+                            if (File.Exists(args[1]))
+                            {
+                                foreach (string line in File.ReadLines(args[1]))
+                                {
+                                    if (line.Contains("package:"))
+                                    {
+                                        arrayApks.Add(line.Substring(8));
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                int counter = 0;
+                                foreach (string str in arrayApks)
+                                {
+                                    Console.WriteLine(counter + " " + str);
+                                    counter++;
+                                }
+                                Console.WriteLine("Please select:");
+                                int indexApk =  Convert.ToInt32(Console.ReadLine());
+                                if(indexApk<0 || indexApk > arrayApks.Count)
+                                {
+                                    Error(4);
+                                }
+                                else
+                                {
+                                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                                    startInfo.FileName = "adb.exe";
+                                    startInfo.Arguments = "uninstall " + arrayApks[indexApk];
+                                    process.StartInfo = startInfo;
+                                    process.Start();
+                                    process.WaitForExit();
+                                    Console.WriteLine(arrayApks[indexApk]+" Unistalled!");
+                                }
+                            }
+                            else
+                            {
+                                Error(3);
+                            }
+                            break;
+                        case "apkS":
+                            if (File.Exists(args[1]))
+                            {
+                                foreach (string line in File.ReadLines(args[1]))
+                                {
+                                    if (line.Contains("package:"))
+                                    {
+                                        arrayApks.Add(line.Substring(8));
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                }
+                                int counter = 0;
+                                foreach (string str in arrayApks)
+                                {
+                                    Console.WriteLine(counter + " " + str);
+                                    counter++;
+                                }
+                                Console.WriteLine("Please select:");
+                                int indexApk = Convert.ToInt32(Console.ReadLine());
+                                if (indexApk < 0 || indexApk > arrayApks.Count)
+                                {
+                                    Error(4);
+                                }
+                                else
+                                {
+                                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                                    startInfo.FileName = "adb.exe";
+                                    startInfo.Arguments = "shell pm uninstall -k --user 0 " + arrayApks[indexApk];
+                                    process.StartInfo = startInfo;
+                                    process.Start();
+                                    process.WaitForExit();
+                                    Console.WriteLine(arrayApks[indexApk] + " Unistalled!");
+                                }
+                            }
+                            else
+                            {
+                                Error(3);
+                            }
+                            break;
+                        default:
+                            Error(2);
+                            break;
+                    }
+                }
+                else
+                { 
                     if (args.Length == 3)
                     {
                         switch (args[0])
@@ -39,7 +137,7 @@ namespace ATAHelper
                                 }
                                 else
                                 {
-                                    Error(3);
+                                    Error(1);
                                 }
                                 break;
                             default:
@@ -51,10 +149,6 @@ namespace ATAHelper
                     {
                         Error(2);
                     }
-                }
-                else
-                {
-                    Error(1);
                 }
             }
             else
@@ -141,7 +235,10 @@ namespace ATAHelper
                     errorSentence = "Error! [Wrong arguments were provided]";
                     break;
                 case 3:
-                    errorSentence = "Error! [Download failed]";
+                    errorSentence = "Error! [File not found]";
+                    break;
+                case 4:
+                    errorSentence = "Error! [Wrong index]";
                     break;
                 default:
                     break;
