@@ -1,6 +1,6 @@
 ![ata logo](https://i.postimg.cc/YqF7Rh0T/atahelper.png)
 
-    ATAHelper version 0.0.2.07102020
+    ATAHelper version 0.0.2.0810
         
 ## 💡Introduction
 
@@ -22,7 +22,7 @@ ATAHelper apkS <filename>
 ```  
 To use this command you have to create a file with the list of apps, to create this file you can use this command
 ```bash
-adb shell pm list packages -s > filename
+adb shell pm list packages -s > <filename>
 ```  
 - Uninstall non system app
 ```bash
@@ -30,7 +30,7 @@ ATAHelper apkNS <filename>
 ```  
 To use this command you have to create a file with the list of apps, to create this file you can use this command
 ```bash
-adb shell pm list packages -3 > filename
+adb shell pm list packages -3 > <filename>
 ```  
 ## 🌞Windows Requirements
 
