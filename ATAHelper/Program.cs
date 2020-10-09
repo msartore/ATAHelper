@@ -22,11 +22,11 @@ namespace ATAHelper
                 {
                     switch (args[0])
                     {
-                        case "apkNS":
-                            Uninstaller(args[1], "uninstall ");
+                        case "apkNSM":
+                            UninstallerM(args[1], "uninstall ");
                             break;
-                        case "apkS":
-                            Uninstaller(args[1], "shell pm uninstall -k --user 0 ");
+                        case "apkSM":
+                            UninstallerM(args[1], "shell pm uninstall -k --user 0 ");
                             break;
                         default:
                             Error(2);
@@ -173,9 +173,10 @@ namespace ATAHelper
             Console.WriteLine(errorSentence);
         }
 
-        public static void Uninstaller(string filename, string command)
+        public static void UninstallerM(string filename, string command)
         {
             var arrayApks = new List<string>();
+            var arrayApksUni = new List<int>();
             if (File.Exists(filename))
             {
                 foreach (string line in File.ReadLines(filename))
@@ -192,30 +193,48 @@ namespace ATAHelper
                     counter++;
                 }
                 Console.WriteLine("-1. EXIT");
+                Console.WriteLine("-2. START UNINSTALL");
                 Console.WriteLine("Please select:");
-                int indexApk = Convert.ToInt32(Console.ReadLine());
-                if (indexApk < 0 || indexApk > arrayApks.Count)
+                do
                 {
-                    if(indexApk != -1)
-                        Error(4);
+                    arrayApksUni.Add(Convert.ToInt32(Console.ReadLine()));
+                }
+                while (arrayApksUni[arrayApksUni.Count-1] != -1 && arrayApksUni[arrayApksUni.Count - 1] != -2);
+                if (arrayApksUni[arrayApksUni.Count - 1] < -2 || arrayApksUni[arrayApksUni.Count - 1] > -1)
+                {
+                    Error(4);
                 }
                 else
                 {
-                    System.Diagnostics.Process process = new System.Diagnostics.Process();
-                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                    startInfo.FileName = "adb.exe";
-                    startInfo.Arguments = command + arrayApks[indexApk];
-                    process.StartInfo = startInfo;
-                    process.Start();
-                    process.WaitForExit();
-                    Console.WriteLine(arrayApks[indexApk] + " Uninstalled!");
+                    if(arrayApksUni[arrayApksUni.Count - 1] != -1)
+                    { 
+                        Console.WriteLine("Starting uninstall method");
+                        arrayApksUni.RemoveAt(arrayApksUni.Count - 1);
+                        foreach(int apkindex in arrayApksUni)
+                        { 
+                            uninstallerFunc(command, arrayApks[apkindex]);
+                        }
+                    }
                 }
             }
             else
             {
                 Error(3);
             }
+        }
+
+        public static void uninstallerFunc(string command, string apkname)
+        {
+            Console.WriteLine("Uninstalling " + apkname);
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.FileName = "adb.exe";
+            startInfo.Arguments = command + apkname;
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+            Console.WriteLine(apkname + " Uninstalled!");
         }
     }
 }
