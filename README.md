@@ -20,7 +20,7 @@ ATAHelper e <Directory> <Output Directory>
 ```bash
 ATAHelper apkS <filename>
 ```  
-To use this command you have to create a file with the list of apps, to create this file you can use this command
+You have to create a file with the list of apps, to create this file you can use this command
 ```bash
 adb shell pm list packages -s > <filename>
 ```  
@@ -28,7 +28,7 @@ adb shell pm list packages -s > <filename>
 ```bash
 ATAHelper apkNS <filename>
 ```  
-To use this command you have to create a file with the list of apps, to create this file you can use this command
+You have to create a file with the list of apps, to create this file you can use this command
 ```bash
 adb shell pm list packages -3 > <filename>
 ```  
